@@ -1,180 +1,234 @@
-# Bernard Limo — Portfolio Website
+# Bernard Limo — Portfolio
 
-Personal portfolio website for **Bernard Limo**, Technical Business Analyst & Service Delivery Manager based in Nairobi, Kenya.
+Personal portfolio for **Bernard Limo**, Technical Business Analyst & Service Delivery Manager, Nairobi, Kenya.
 
-🔗 **Live site:** [https://bernard-portfolio.onrender.com](https://bernard-portfolio.onrender.com)
+🔗 **Live:** [https://bernard-portfolio.onrender.com](https://bernard-portfolio.onrender.com)
 
 ---
 
-## Tech Stack
+## Stack
 
-- **Pure HTML / CSS / Vanilla JS** — no frameworks, no build step required
-- **Fonts:** Inter + Instrument Serif (Google Fonts)
-- **Hosting:** [Render](https://render.com) — deployed as a Static Site
+| Tool | Purpose |
+|---|---|
+| React 18 | UI components |
+| Vite 5 | Dev server & build |
+| CSS Modules | Scoped per-component styles |
+| Vanilla JS | Scroll reveal, nav highlight |
+| Render | Static site hosting |
+
+No Tailwind, no external UI libraries — intentionally lean for easy maintenance.
 
 ---
 
 ## Project Structure
 
 ```
-bernard-limo-portfolio/
-├── index.html          # Main portfolio page (single-page)
-├── assets/             # Create this folder for images & files
-│   ├── photo.jpg       # Profile photo (see instructions below)
-│   ├── bernard-limo-cv.pdf   # Downloadable CV
-│   └── badges/         # Certification badge images (optional)
-│       └── ibm.png
-├── README.md           # This file
-├── .gitignore          # Git ignore rules
-└── render.yaml         # Render deployment config
+bernard-portfolio/
+│
+├── public/
+│   ├── limo.jpg              ← profile photo (already in repo)
+│   └── favicon.svg           ← add a favicon here
+│
+├── src/
+│   ├── styles/
+│   │   └── global.css        ← design tokens, resets, shared classes
+│   │
+│   ├── hooks/
+│   │   └── useReveal.js      ← scroll-reveal IntersectionObserver hook
+│   │
+│   ├── components/
+│   │   ├── Navbar.jsx / .module.css
+│   │   ├── Hero.jsx   / .module.css
+│   │   ├── About.jsx  / .module.css
+│   │   ├── Experience.jsx    / .module.css
+│   │   ├── Projects.jsx      / .module.css
+│   │   ├── Skills.jsx        / .module.css
+│   │   ├── Certifications.jsx/ .module.css
+│   │   ├── Contact.jsx       / .module.css
+│   │   └── Footer.jsx        / .module.css
+│   │
+│   ├── data.js               ← ALL content lives here (single source of truth)
+│   ├── App.jsx               ← assembles all section components
+│   └── main.jsx              ← Vite entry point
+│
+├── index.html                ← Vite root HTML
+├── vite.config.js
+├── package.json
+├── render.yaml               ← Render deployment config
+└── .gitignore
 ```
 
 ---
 
 ## Local Development
 
-No build tools needed. Just open the file in a browser:
-
 ```bash
-# Clone the repo
-git clone https://github.com/YOUR_USERNAME/bernard-limo-portfolio.git
-cd bernard-limo-portfolio
+# 1. Clone
+git clone https://github.com/NeskoLimo/bernard-portfolio.git
+cd bernard-portfolio
 
-# Open directly in browser (macOS)
-open index.html
+# 2. Install
+npm install
 
-# Or on Linux
-xdg-open index.html
-
-# Or just drag index.html into any browser window
+# 3. Start dev server
+npm run dev
+# → opens at http://localhost:5173
 ```
 
 ---
 
-## Deploying to Render (Static Site)
+## Deploying to Render
 
-### First-time setup
+The `render.yaml` at the root handles deployment automatically.
 
-1. Push this repo to GitHub
-2. Go to [https://dashboard.render.com](https://dashboard.render.com)
-3. Click **New +** → **Static Site**
-4. Connect your GitHub account and select this repository
-5. Fill in the settings:
+### First-time setup on Render
+
+1. Go to [dashboard.render.com](https://dashboard.render.com) → **New +** → **Static Site**
+2. Connect GitHub → select `NeskoLimo/bernard-portfolio`
+3. Render reads `render.yaml` automatically. Confirm these settings:
 
 | Setting | Value |
 |---|---|
-| **Name** | `bernard-limo-portfolio` |
-| **Branch** | `main` |
-| **Root Directory** | *(leave blank)* |
-| **Build Command** | *(leave blank — no build needed)* |
-| **Publish Directory** | `.` |
+| Build Command | `npm install && npm run build` |
+| Publish Directory | `dist` |
 
-6. Click **Create Static Site**
+4. Click **Create Static Site** — live in ~2 minutes.
 
-### Subsequent updates
+### Auto-deploy on push
 
-Every push to `main` auto-redeploys the site in ~30 seconds.
+Every `git push` to `main` triggers an automatic redeploy. No manual steps needed.
 
 ```bash
 git add .
-git commit -m "Update projects section"
+git commit -m "Add new project"
 git push origin main
+# Render redeploys automatically in ~60 seconds
 ```
 
 ---
 
-## How to Add Your Profile Photo
+## Adding Your Profile Photo
 
-The About section currently shows a placeholder box labelled "Photo".
+Your photo `limo.jpg` is already in the `/public` folder.
 
-**To replace it with a real image:**
+To activate it in the About section:
 
-1. Create an `assets/` folder in the repo root
-2. Add your photo as `assets/photo.jpg` (recommended: square crop, min 240×240px)
-3. In `index.html`, find this block in the `#about` section:
-
-```html
-<div class="about-img" aria-label="Profile photo placeholder"></div>
-```
-
-4. Replace it with:
-
-```html
-<img class="about-img" src="assets/photo.jpg" alt="Bernard Limo" />
-```
-
-5. In the CSS, find `.about-img::after` and remove that entire rule (it's the one that renders the "Photo" label — no longer needed once a real image is in place)
+1. Open `src/components/About.jsx`
+2. Find this line:
+   ```jsx
+   <div className={styles.imgPlaceholder} aria-label="Profile photo placeholder" />
+   ```
+3. Replace with:
+   ```jsx
+   <img className={styles.img} src="/limo.jpg" alt="Bernard Limo" />
+   ```
+4. Open `src/components/About.module.css` and **delete** the `.imgPlaceholder` and `.imgPlaceholder::after` rules.
+5. Save and push.
 
 ---
 
-## Customising Each Section
+## Updating Content
 
-Every section has **scalability comments** directly in `index.html` — look for `<!-- SCALABILITY: ... -->` in the HTML and `/* SCALABILITY: ... */` in the CSS. They explain exactly how to extend each component.
+**All content lives in one file: `src/data.js`**
 
-### Quick reference
+You never need to touch a component just to update text, add a project, or add a role.
 
-| Section | How to extend |
-|---|---|
-| **Hero** | Edit name, tagline, bio, stat values inline |
-| **About** | Add `<p class="about-body">` paragraphs; swap image placeholder |
-| **Experience** | Copy any `.exp-item` block; newest role goes first |
-| **Projects** | Copy any `.proj-card` block; cards wrap automatically |
-| **Skills** | Add `<span class="skill-item">` or a whole new `.skill-group` |
-| **Certifications** | Copy any `.cert-item` block; link to Credly by wrapping in `<a>` |
-| **Contact** | Add `<a class="contact-link">` items; they wrap via flexbox |
-
-### Adding a new project card
-
-```html
-<div class="proj-card reveal">
-  <div class="proj-period">Month Year – Month Year</div>
-  <div class="proj-sector">Industry · Type</div>
-  <h3 class="proj-title">Project Name</h3>
-  <p class="proj-desc">What you did and why it mattered.</p>
-  <div class="proj-impact">↗ Key outcome or metric</div>
-</div>
+### Update personal info / bio
+```js
+// src/data.js
+export const personal = {
+  name: 'Bernard Limo',
+  email: 'koneslimo@gmail.com',
+  phone: '+254 706 262 690',
+  linkedin: 'https://www.linkedin.com/in/YOUR_HANDLE', // ← update this
+  bio: [
+    'First paragraph...',
+    'Second paragraph...',
+    // add more paragraphs here
+  ],
+};
 ```
 
-### Adding a new experience entry
-
-```html
-<div class="exp-item reveal">
-  <div class="exp-date">Mon Year — Mon Year</div>
-  <div>
-    <div class="exp-role">Your Role Title</div>
-    <div class="exp-co">Company Name</div>
-    <p class="exp-desc">What you did, impact, scope.</p>
-    <div class="exp-metrics">
-      <span class="metric">↑ Key metric</span>
-    </div>
-  </div>
-</div>
+### Add a new project
+```js
+// src/data.js → projects array
+{
+  id: 'proj-7',                          // unique ID
+  period: 'Jan 2026 – Present',
+  sector: 'Industry · Type',
+  title: 'Project Name',
+  description: 'What you did and why it mattered.',
+  impact: '↗ Key outcome',
+  link: null,                            // or 'https://...' to add a live button
+},
 ```
 
-### Updating your LinkedIn URL
+### Add a new experience entry
+```js
+// src/data.js → experience array (newest first)
+{
+  id: 'exp-6',
+  date: 'Jan 2026 — Present',
+  role: 'New Role Title',
+  company: 'Company Name',
+  description: 'What you did, scope, and impact.',
+  metrics: ['↑ Key metric', 'Another metric'],
+},
+```
 
-Search `index.html` for `https://linkedin.com` and replace with your actual profile URL.
+### Add a new skill group
+```js
+// src/data.js → skills array
+{
+  id: 'skill-languages',
+  category: 'Languages',
+  items: ['English', 'Swahili', 'French'],
+},
+```
+
+### Add a certification with a Credly link
+```js
+// src/data.js → certifications array
+{
+  id: 'cert-11',
+  name: 'New Certification Name',
+  issuer: 'Issuing Body',
+  link: 'https://www.credly.com/badges/YOUR_BADGE_ID',
+},
+```
+
+### Add a hero stat
+```js
+// src/data.js → stats array
+{ value: '50+', label: 'Stakeholders engaged' },
+```
 
 ---
 
-## Planned Improvements (Roadmap)
+## Adding a New Section
 
-- [ ] Add real profile photo (`assets/photo.jpg`)
-- [ ] Add downloadable CV link (`assets/bernard-limo-cv.pdf`)
-- [ ] Populate LinkedIn URL
-- [ ] Add more projects as they are completed
-- [ ] Add Open Graph meta tags for social sharing previews
-- [ ] Add a favicon (`favicon.ico` or `favicon.svg`)
+1. Create `src/components/MySectionName.jsx`
+2. Create `src/components/MySectionName.module.css`
+3. Export your data from `src/data.js`
+4. Import and add `<MySectionName />` in `src/App.jsx`
+5. Add a nav link in `src/components/Navbar.jsx` → `links` array
+
+---
+
+## Planned Improvements
+
+- [ ] Activate profile photo (`/public/limo.jpg` → swap in `About.jsx`)
+- [ ] Update LinkedIn URL in `src/data.js`
+- [ ] Add Credly URLs to certification items
+- [ ] Add `favicon.svg` to `/public`
+- [ ] Add Open Graph meta tags to `index.html`
+- [ ] Add downloadable CV link (`/public/bernard-limo-cv.pdf`)
+- [ ] Add more projects as completed
 - [ ] Add a writing / blog section
-- [ ] Add Calendly or contact form to Contact section
-- [ ] Add credential badge images for certifications
+- [ ] Add a contact form or Calendly embed
 
 ---
 
 ## License
 
-This project is personal and not licensed for reuse. All content belongs to Bernard Limo.
-
----
-
-*Built with care. Deployed on Render.*
+Personal project. All content © Bernard Limo.
