@@ -40,7 +40,6 @@
   margin-top: 3rem; padding-top: 2rem;
   border-top: 1px solid var(--border);
 }
-.stat {}
 .statVal {
   font-family: 'Instrument Serif', serif;
   font-size: 1.9rem; color: var(--txt); line-height: 1;
