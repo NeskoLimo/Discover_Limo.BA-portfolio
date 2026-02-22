@@ -1,0 +1,34 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.card {
+  background: var(--bg);
+  padding: 1.5rem;
+  transition: background 0.15s;
+  display: flex; flex-direction: column;
+}
+.card:hover { background: var(--surface); }
+
+.period { font-size: 0.7rem; color: var(--txt-3); margin-bottom: 0.4rem; letter-spacing: 0.04em; }
+.sector { font-size: 0.7rem; font-weight: 500; color: var(--blue); margin-bottom: 0.6rem; }
+.title  { font-size: 0.88rem; font-weight: 500; color: var(--txt); margin-bottom: 0.5rem; line-height: 1.35; letter-spacing: -0.01em; }
+.desc   { font-size: 0.8rem; line-height: 1.7; color: var(--txt-2); font-weight: 300; flex: 1; }
+
+.footer { display: flex; align-items: center; justify-content: space-between; margin-top: 0.75rem; }
+.impact { font-size: 0.73rem; color: var(--green); font-weight: 500; letter-spacing: 0.02em; }
+.viewLink {
+  font-size: 0.73rem; color: var(--blue);
+  text-decoration: none; font-weight: 500;
+  transition: opacity 0.15s;
+}
+.viewLink:hover { opacity: 0.7; }
+
+@media (max-width: 600px) {
+  .grid { grid-template-columns: 1fr; }
+}
