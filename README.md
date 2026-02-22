@@ -2,7 +2,8 @@
 
 Personal portfolio for **Bernard Limo**, Technical Business Analyst & Service Delivery Manager, Nairobi, Kenya.
 
-🔗 **Live:** [https://bernard-portfolio.onrender.com](https://bernard-portfolio.onrender.com)
+🔗 **Repo:** `git@github.com:NeskoLimo/Discover_Limo.BA-portfolio.git`
+🔗 **Live:** [https://discover-limo-ba-portfolio.onrender.com](https://discover-limo-ba-portfolio.onrender.com) *(update this once Render assigns the URL)*
 
 ---
 
@@ -64,8 +65,8 @@ bernard-portfolio/
 
 ```bash
 # 1. Clone
-git clone https://github.com/NeskoLimo/bernard-portfolio.git
-cd bernard-portfolio
+git clone git@github.com:NeskoLimo/Discover_Limo.BA-portfolio.git
+cd Discover_Limo.BA-portfolio
 
 # 2. Install
 npm install
@@ -84,7 +85,7 @@ The `render.yaml` at the root handles deployment automatically.
 ### First-time setup on Render
 
 1. Go to [dashboard.render.com](https://dashboard.render.com) → **New +** → **Static Site**
-2. Connect GitHub → select `NeskoLimo/bernard-portfolio`
+2. Connect GitHub → select `NeskoLimo/Discover_Limo.BA-portfolio`
 3. Render reads `render.yaml` automatically. Confirm these settings:
 
 | Setting | Value |
@@ -109,21 +110,36 @@ git push origin main
 
 ## Adding Your Profile Photo
 
-Your photo `limo.jpg` is already in the `/public` folder.
+Your photo (`limo.jpg`) is in your repo. To wire it into the site:
 
-To activate it in the About section:
-
-1. Open `src/components/About.jsx`
-2. Find this line:
+1. Make sure it lives at `/assets/limo.jpg` in the repo root (create the `assets/` folder if needed — **do not use a folder named `public`**, as this conflicts with a file already committed to the repo)
+2. Open `src/components/About.jsx`
+3. Find this line:
    ```jsx
    <div className={styles.imgPlaceholder} aria-label="Profile photo placeholder" />
    ```
-3. Replace with:
+4. Replace it with:
    ```jsx
    <img className={styles.img} src="/limo.jpg" alt="Bernard Limo" />
    ```
-4. Open `src/components/About.module.css` and **delete** the `.imgPlaceholder` and `.imgPlaceholder::after` rules.
-5. Save and push.
+5. Open `src/components/About.module.css` and **delete** the `.imgPlaceholder` and `.imgPlaceholder::after` rules
+6. Commit and push — Render redeploys automatically
+
+> **Why `assets/` not `public/`?** The repo had a file (not a folder) at the path `public` from a previous commit. Vite's `publicDir` is set to `assets` in `vite.config.js` to avoid the `ENOTDIR` build error this causes.
+
+---
+
+## Troubleshooting
+
+### `ENOTDIR: not a directory, scandir '.../public'`
+This means a file named `public` exists in the repo root instead of a folder. It's already handled — `vite.config.js` sets `publicDir: 'assets'`. Make sure you put images in `/assets/`, not `/public/`.
+
+### Build fails on Render but works locally
+- Check that `render.yaml` has `buildCommand: mkdir -p assets && npm install && npm run build`
+- Check that `staticPublishPath: dist` matches Vite's `outDir: 'dist'`
+
+### Changes not showing after push
+Render caches aggressively. Go to your Render dashboard → Manual Deploy → Clear cache and deploy.
 
 ---
 
