@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  publicDir: 'assets',
+  publicDir: 'assets',   // avoids ENOTDIR conflict with existing 'public' file in repo
   build: {
     outDir: 'dist',
   },
