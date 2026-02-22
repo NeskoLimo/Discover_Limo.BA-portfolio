@@ -1,8 +1,10 @@
 services:
   - type: web
-    name: bernard-portfolio
+    name: Discover_Limo.BA-portfolio
     runtime: static
-    buildCommand: npm install && npm run build
+    # mkdir -p assets ensures the publicDir exists even if the folder is empty,
+    # preventing Vite from throwing ENOTDIR on a missing or misnamed directory.
+    buildCommand: mkdir -p assets && npm install && npm run build
     staticPublishPath: dist
     pullRequestPreviewsEnabled: false
     headers:
