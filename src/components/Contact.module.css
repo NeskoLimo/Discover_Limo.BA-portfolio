@@ -1,0 +1,33 @@
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 2.5rem;
+}
+.heading {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.7rem; line-height: 1.25;
+  color: var(--txt); letter-spacing: -0.02em; margin-bottom: 0.75rem;
+}
+.heading em { font-style: italic; color: var(--blue); }
+.sub {
+  font-size: 0.88rem; color: var(--txt-2);
+  font-weight: 300; line-height: 1.7;
+  max-width: 46ch; margin-bottom: 2rem;
+}
+.links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.link {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.55rem 1.1rem;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r);
+  font-size: 0.82rem; color: var(--txt-2);
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s;
+}
+.link:hover { border-color: var(--border-h); color: var(--txt); }
+
+@media (max-width: 600px) {
+  .links { flex-direction: column; }
+  .card { padding: 1.5rem; }
+}
